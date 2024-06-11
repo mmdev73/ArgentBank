@@ -2,6 +2,7 @@
 import { Outlet, RouterProvider, createBrowserRouter, useRouteError, Link } from 'react-router-dom'
 import Navbar from './componnents/Navbar'
 import Footer from './componnents/Footer'
+import Main from './componnents/Main'
 
 const Layout = () => {  
   return <>
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
     children: [
       {
         path:'/',
-        element: ""
+        element: <Main />
       },
       {
         path:'/signin',
