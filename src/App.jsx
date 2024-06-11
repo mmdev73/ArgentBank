@@ -3,6 +3,7 @@ import { Outlet, RouterProvider, createBrowserRouter, useRouteError, Link } from
 import Navbar from './componnents/Navbar'
 import Footer from './componnents/Footer'
 import Main from './componnents/Main'
+import SignIn from './componnents/SignIn'
 
 const Layout = () => {  
   return <>
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path:'/signin',
-        element: ""
+        element: <SignIn />
       },
       {
         path:'/user',
