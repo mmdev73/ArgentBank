@@ -1,11 +1,15 @@
 
 import { Outlet, RouterProvider, createBrowserRouter, useRouteError, Link } from 'react-router-dom'
-
+import Navbar from './componnents/Navbar'
+import Footer from './componnents/Footer'
 
 const Layout = () => {  
   return <>
-    <h1>Argent Bank</h1>
-    <Outlet />
+    <Navbar />
+    <main>
+      <Outlet />
+    </main>
+    <Footer />
   </>
 }
 
