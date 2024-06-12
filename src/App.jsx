@@ -4,6 +4,7 @@ import Navbar from './componnents/Navbar'
 import Footer from './componnents/Footer'
 import Main from './componnents/Main'
 import SignIn from './componnents/SignIn'
+import Account from './componnents/Account'
 
 const Layout = () => {  
   return <>
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path:'/user',
-        element: ""
+        element: <Account />
       },
       {
         path:'/*',
