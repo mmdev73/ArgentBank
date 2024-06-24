@@ -10,20 +10,17 @@ const SignIn = () => {
     const [isLoadingAuth, setIsLoadingAuth] = useState(false)
     const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false)
     const [isError, setIsError] = useState(false)
-    
+    const sessionStorage = window.sessionStorage
     const handleSignIn = (e) => {
         e.preventDefault()
-        console.log('Sign In')
         setIsError(false)
         setIsLoadingAuth(true)
         const username = document.getElementById('username').value
         const password = document.getElementById('password').value
-        //console.log(username, password)
         login(username, password)
     }
     
     const login = async (username, password) => {
-        console.log("login() :" + username + " " + password)
         const response = await fetch('http://localhost:3001/api/v1/user/login', {
             method: 'POST',
             headers: {
@@ -37,35 +34,30 @@ const SignIn = () => {
             })
         })
         const data = await response.json()
-        console.log(data)
         if(data.status === 400){
             setIsError(true)
-            console.log("Credentials : invalid")
             document.querySelector('.signin__content__text').innerText = `${data.status} - ${data.message}`
         }
     
         if(data.status === 200){
-            console.log("Credentials : valid")
             document.querySelector('.signin__content__text').innerText = ""
             const rememberMe = document.getElementById('remember')
-            console.log('rememberMe checked : ' + rememberMe.checked)
+            sessionStorage.setItem('token', data.body.token)
             if(rememberMe.checked){
-                console.log('rememberMe checked : FORCE TRUE')
                 dispatch(setLogin({token: data.body.token,rememberMe: true}))
+                
             } else {
-                console.log('rememberMe checked : DEFAULT FALSE')
                 dispatch(setLogin({token: data.body.token,rememberMe: false}))
             }
+            console.log('sessionStorage TOKEN after dispatch: ',sessionStorage.getItem('token'))
             getUserInfo(data.body.token)
         }
     
         if(data.status === 500){
-            console.log("Credentials : unknown - Server Error")
             document.querySelector('.signin__content__text').innerText = `${data.status} - ${data.message}`
         }
     }
     const getUserInfo = async (isAuthToken) => {
-        console.log("getUserInfo() :" + isAuthToken)
         setIsLoadingAuth(false)
         setIsLoadingUserInfo(true)
         if(!isAuthToken){
@@ -79,16 +71,15 @@ const SignIn = () => {
             },
         })
         const data = await response.json()
-        console.log(data)
         if(data.status === 400 || data.status === 401){
             setIsError(true)
-            console.log("Credentials Token: invalid")
         }
     
         if(data.status === 200){
-            console.log("Credentials Token: valid")
+            sessionStorage.setItem('userI', JSON.stringify(data.body))
             dispatch(setUserInfo({userInfo: data.body}))
-            setIsLoadingUserInfo(false)          
+            setIsLoadingUserInfo(false)  
+            console.log('sessionStorage userI after dispatch: ',sessionStorage.getItem('userI'))        
             navigate("/user")
         }
     

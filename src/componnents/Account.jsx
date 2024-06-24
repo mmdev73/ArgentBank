@@ -1,32 +1,24 @@
 import { accountsBalances } from "../assets/accounts"
 import { useSelector, useDispatch } from 'react-redux'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import AccountItem from "./AccountItem"
 import {Navigate} from "react-router-dom"
-import { setUserInfo } from '../features/authSlicer'
+import { setLogin, setUserInfo } from '../features/authSlicer'
 const Account = () => {
-    const userI = useSelector((state) => state.auth.userInfo).userInfo
-    console.log(userI)
-    const token = useSelector((state) => state.auth.token)
     const dispatch = useDispatch()
-    if(!userI || userI === undefined) {
-        return <Navigate to="/signin" />
-    }
+    const sessionStorage = window.sessionStorage
+    const userI = useSelector((state) => state.auth.userInfo)
+    const token = useSelector((state) => state.auth.token)
 
     const [showEditName, setShowEditName] = useState(false)
     const [isInvalidFirstName, setIsInvalidFirstName] = useState(false)
     const [isInvalidLastName, setIsInvalidLastName] = useState(false)
-
     const handleEditName = (e) => {
-        console.log('Edit Name')
         e.preventDefault()
         const firstName = document.getElementById('firstName').value
         const lastName = document.getElementById('lastName').value
         
-        console.log(isInvalidFirstName, isInvalidLastName)
         if(!isInvalidFirstName && !isInvalidLastName){
-            console.log('Update User Info')
-            console.log(firstName, lastName)
             updateUserInfo(token, firstName, lastName)
         }
     }
@@ -50,14 +42,9 @@ const Account = () => {
     }
 
     const updateUserInfo = async (isAuthToken, firstName, lastName) => {
-        console.log("updateUserInfo() :" + isAuthToken)
         if(!isAuthToken){
-            console.log("JWT malformed : Token === " + isAuthToken)
             return
         }
-        console.log('--------------------')
-        console.log(firstName, lastName)
-        console.log('--------------------')
         const objToSend = {
             method: 'PUT',
             headers: {
@@ -73,13 +60,11 @@ const Account = () => {
         }
         const response = await fetch('http://localhost:3001/api/v1/user/profile', objToSend)
         const data = await response.json()
-        console.log(data)
         if(data.status === 400 || data.status === 401){
             console.log(data.message)
         }
     
         if(data.status === 200){
-            console.log(data.message)
             dispatch(setUserInfo({userInfo: data.body}))
             setShowEditName(!showEditName)
         }
@@ -92,6 +77,12 @@ const Account = () => {
     const toggleEditForm = () => {
         setShowEditName(!showEditName)
     }
+    console.log('userI: ', userI)
+    if(!userI || userI === undefined || userI === null){
+        console.log('no userI REDIRECT')
+        return <Navigate to="/signin" />
+    }
+
     return (
         <>
             <div className="accountsBalance">
@@ -137,7 +128,7 @@ const Account = () => {
                 </section>
             </div>            
         </>
-    )
+    ) 
 }
 
 export default Account

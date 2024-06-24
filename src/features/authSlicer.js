@@ -1,24 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
+
+//const sessionStorage = window.sessionStorage
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         token: false,
-        userInfo: {}
+        userInfo: undefined
     },
     reducers: {
         setLogin: (state = initialState, action) => {
-            console.log(state)
-            console.log(action)
             if (action.payload.token !== "null" && action.payload.token !== "undefined" && action.payload.token !== false) {
                 state.token = action.payload.token
                 if (action.payload.rememberMe) {
-                    console.log('setLogin() called with rememberMe')
                     document.cookie = `token=${action.payload.token}; path=/; max-age=3600; SameSite=None; Secure`
-                    console.log('---------------------------------------------')
-                    console.log(document.cookie)
-                    console.log('---------------------------------------------')
                 } else {
-                    console.log('setLogin() called without rememberMe')
                     document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
                 }
             } else {
@@ -28,11 +23,12 @@ export const authSlice = createSlice({
         },
         rmLogin: (state = initialState) => {
             state.token = false
+            //sessionStorage.removeItem('token')
             document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
         },
         setUserInfo: (state = initialState, action) => {
-            console.log('setuserInfo() called')
-            state.userInfo = action.payload
+            state.userInfo = action.payload.userInfo
+            //sessionStorage.setItem('userInfo', JSON.stringify(action.payload.userInfo))
         },
     },
 })

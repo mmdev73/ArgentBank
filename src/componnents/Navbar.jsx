@@ -1,12 +1,12 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux'
 import { setLogin, setUserInfo, rmLogin } from '../features/authSlicer'
+import { useEffect } from "react"
 const Navbar = () => {
     const isAuth = useSelector((state) => state.auth.token)
-    const userI = useSelector((state) => state.auth.userInfo).userInfo
+    const userI = useSelector((state) => state.auth.userInfo)
     const dispatch = useDispatch()
-    
-
+    const sessionStorage = window.sessionStorage
     const getUserInfoNv = async (isAuthToken) => {
         if(!isAuthToken){
             console.log("JWT malformed : Token === " + isAuthToken)
@@ -19,7 +19,6 @@ const Navbar = () => {
             },
         })
         const data = await response.json()
-        console.log(data)
         if(data.status === 400 || data.status === 401){
             console.log("Credentials Token: invalid")
         }
@@ -33,6 +32,14 @@ const Navbar = () => {
         }
     }
 
+    if(userI === undefined){
+        if(sessionStorage.getItem('token')){
+            dispatch(setLogin({token: sessionStorage.getItem('token'), rememberMe: false}))
+        }
+        if(sessionStorage.getItem('userI')){
+            dispatch(setUserInfo({userInfo: JSON.parse(sessionStorage.getItem('userI'))}))
+        }
+    }
     if(document.cookie && isAuth === false) {
         const cok = document.cookie.split('token=')
         console.log(cok[1])
@@ -41,7 +48,7 @@ const Navbar = () => {
             getUserInfoNv(cok[1])
         }        
     }
-
+    
     return (
         <nav className="navbar">
             <Link to={'/'} className="navbar__link">
