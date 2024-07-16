@@ -2,9 +2,10 @@
 import { Outlet, RouterProvider, createBrowserRouter, useRouteError, Link } from 'react-router-dom'
 import Navbar from './componnents/Navbar'
 import Footer from './componnents/Footer'
-import Main from './componnents/Main'
-import SignIn from './componnents/SignIn'
-import Account from './componnents/Account'
+import Main from './pages/Main'
+import SignIn from './pages/SignIn'
+import Account from './pages/Account'
+import AccountView from './pages/AccountView'
 
 const Layout = () => {  
   return <>
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path:'/user',
         element: <Account />
+      },
+      {
+        path:'/account/:accountId',
+        element: <AccountView />
       },
       {
         path:'/*',

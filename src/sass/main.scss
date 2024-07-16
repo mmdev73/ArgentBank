@@ -1,12 +1,5 @@
 @import 'App';
-@import './componnents/Navbar';
-@import './componnents/Footer';
-@import './componnents/Main';
-@import './componnents/Feature';
-@import './componnents/FeatureItem';
-@import './componnents/SignIn';
-@import './componnents/Account';
-@import './componnents/AccountItem';
+
 
 html{
     font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -20,6 +13,20 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    min-width: 320px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+#root{
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 70px 1fr 70px;
+}
+.content__container{
+    width: 100%;
+    padding-bottom: 1rem;
+    box-sizing: border-box;
 }
 .sr-only {
     border: 0 !important;
@@ -51,3 +58,14 @@ body{
         color: #00bc77;
     }
 }
+
+
+@import './componnents/Navbar';
+@import './componnents/Footer';
+@import './pages/Main';
+@import './componnents/Feature';
+@import './componnents/FeatureItem';
+@import './pages/SignIn';
+@import './pages/Account';
+@import './componnents/AccountItem';
+@import './pages/AccountView';    

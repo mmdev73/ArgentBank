@@ -1,37 +1,53 @@
 .accountsBalance{
-    background-color: #12002b;
-    height: calc(100vh - 9.0625rem);
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    @media screen and (min-width: 720px) {
-        height: auto;
-    }
+    background-color: #bcc9ce;
+    margin-top: -1.25rem;
 }
 
 .account{
     display: flex;
-    flex-flow: column;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 1.5rem;
+    justify-content: center;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    &__update__error{
+        width: 70%;
+        margin: 1rem auto;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        color: white;
+        background-color: #fc5050;
+        border: 0.0625rem solid #fff;
+        border-radius: 0.3125rem;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
     &__title{
         width: 100%;
-        color: #fff;
+        color: #292929;
         display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
         &__edit__form{
             display: none;
-            width: 40%;
+            width: 100%;
             margin: auto;
             flex-flow: column;
             &__group{
                 width: 100%;
                 display: flex;
-                flex-flow: row;
+                flex-flow: column;
                 justify-content: center;
+                align-items: center;
                 gap: 1rem;
                 margin-bottom: 1rem;
+                @media screen and (min-width: 768px) {
+                    flex-flow: row;
+                }
                 &__input{
                     padding: 0.5rem;
                     border: 1px solid #ccc;
@@ -49,29 +65,35 @@
                 border-radius: 0.3125rem;
                 padding: 0.5rem;
                 font-size: 0.8rem;
+                width: 100%;
+                box-sizing: border-box;
+                margin-bottom: 1rem;
                 &.active{
                     display: block;
+                    margin:0 auto;
                 }
             }
             &__btn{
                 width: 80px;
-                border-color: #00bc77;
-                background-color: #00bc77;
-                color: #fff;
+                border-color: #4f12df;
+                color: #611ffa;
                 font-weight: bold;
                 padding: 10px;
+                @media screen and (min-width: 768px) {
+                    margin-top: 1rem;
+                }
                 &[disabled='']{
-                    border-color: #033a26;
-                    background-color: #092b1e;
+                    border-color: #df1212;
+                    background-color: #cdc3e4;
+                    margin-top: 1rem;
                 }
             }
         }
     }
     &__btn{
         display: none;
-        border-color: #00bc77;
-        background-color: #00bc77;
-        color: #fff;
+        border-color: #4f12df;
+        color: #611ffa;
         font-weight: bold;
         padding: 10px;
         &.active{
@@ -79,4 +101,4 @@
         }
     }
 }
-@import '_AccountItem';
+@import '../componnents/_AccountItem';

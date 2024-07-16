@@ -17,7 +17,7 @@ export const accountsBalances = [
     },
     {
         id: 3,
-        accountId: 8349,
+        accountId: 5201,
         balance: 184.30,
         currency: 'USD',
         availableBalance: false,

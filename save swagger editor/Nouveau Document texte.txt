@@ -1,0 +1,319 @@
+swagger: '2.0'
+info:
+  title: Argent bank 2.0
+  description: |-
+    API for ArgentBank transactions
+
+    ## Features:
+    ### User
+    * handle user login
+    * handle user signup
+    * get user profile
+    * update user profile
+    ### Transaction. Not implemented yet
+    * get user's transactions for current month group by accounts
+    * get user's specific transaction
+    * Addd, Update or Delete categoryand/or notes on a specific transaction
+  version: alpha 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:3001/api/v1
+tags:
+  - name: User
+    description: Operations about user
+  - name: Transaction
+    description: Operations about user's transactions
+paths:
+  /user/login:
+    summary: User's login
+    description: Login's operations
+    post:
+      tags: 
+        - User
+      summary: Login
+      consumes:
+        - application/json
+      description: API for Login
+      operationId: loginPost
+      parameters:
+        - in: body
+          name: body
+          description: Login Payload
+          required: true
+          schema:
+            $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Login Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/signup:
+    summary: User's sign up
+    description: Login's operations
+    post:
+      tags: 
+        - User
+      summary: SignUp
+      description: API for SignUp
+      operationId: signUpPost
+      parameters:
+        - in: query
+          name: body
+          description: SignUp Payload
+          required: true
+          schema:
+            $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Login Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/profile:
+    summary: User profile API
+    description: API for handle a user profile
+    post:
+      security:
+        - Bearer: [] 
+      tags:
+        - User
+      summary: User Profile API
+      description: API for fetching a user profile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          schema:
+            $ref: '#/components/securitySchemes/Bearer'
+      responses:
+        '200':
+          description: User profile retrieved successully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User
+      summary: User Profile API
+      description: API for updating a user profile
+      parameters:
+        - in: query
+          name: body
+          description: Update user profile attributes
+          required: true
+          schema:
+            $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          description: User profile retrieved successully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /transactions:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction
+      summary: Transaction API
+      description: API for fetching all transactions for an user
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          schema:
+            $ref: '#/components/securitySchemes/Bearer'
+      responses:
+        '200':
+          description: User transactions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /transactions/{transactionId}:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction
+      summary: Transaction API
+      description: API for fetching a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          schema:
+            $ref: '#/components/securitySchemes/Bearer'
+        - in: path
+          name: transactionId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the transaction
+      responses:
+        '200':
+          description: User transactions updates and retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction
+      summary: Transaction API
+      description: API for updating a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          schema:
+            $ref: '#/components/securitySchemes/Bearer'
+        - in: path
+          name: transactionId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the transaction
+        - in: query
+          name: body
+          description: Transaction update Payload
+          required: true
+          schema:
+            $ref: '#/components/schemas/TransactionsUpdate'
+      responses:
+        '200':
+          description: User transactions updates and retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          description: the user's email
+        password:
+          type: string
+          description: the user's password
+        firstName:
+          type: string
+          description: the user's first name
+        lastName:
+          type: string
+          description: the user's last name
+    Login:
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        body:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    UserProfile:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: number
+        balance:
+          type: number
+        description:
+          type: string
+        type:
+          type: string
+        date:
+          type: string
+          format: date
+        categorie:
+          type: integer
+          format: int64
+        note:
+          type: string
+    TransactionsUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+        categorie:
+          type: integer
+          format: int64
+        note:
+          type: string

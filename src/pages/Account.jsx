@@ -1,18 +1,19 @@
 import { accountsBalances } from "../assets/accounts"
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from "react"
-import AccountItem from "./AccountItem"
+import { useState } from "react"
+import AccountItem from "../componnents/AccountItem"
 import {Navigate} from "react-router-dom"
-import { setLogin, setUserInfo } from '../features/authSlicer'
+import { setUserInfo } from '../features/authSlicer'
+import {services} from '../utils/services'
 const Account = () => {
     const dispatch = useDispatch()
-    const sessionStorage = window.sessionStorage
     const userI = useSelector((state) => state.auth.userInfo)
     const token = useSelector((state) => state.auth.token)
 
     const [showEditName, setShowEditName] = useState(false)
     const [isInvalidFirstName, setIsInvalidFirstName] = useState(false)
     const [isInvalidLastName, setIsInvalidLastName] = useState(false)
+    const [isError, setIsError] = useState(false)
     const handleEditName = (e) => {
         e.preventDefault()
         const firstName = document.getElementById('firstName').value
@@ -42,25 +43,13 @@ const Account = () => {
     }
 
     const updateUserInfo = async (isAuthToken, firstName, lastName) => {
-        if(!isAuthToken){
-            return
-        }
-        const objToSend = {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${isAuthToken}`,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-                firstName: firstName,
-                lastName: lastName
+        setIsError(false)
+        const data = await services.user.updateProfile(isAuthToken, firstName, lastName)
+        if(data.status !== 200){
+            setIsError({
+                status: data.status,
+                message: data.message
             })
-        }
-        const response = await fetch('http://localhost:3001/api/v1/user/profile', objToSend)
-        const data = await response.json()
-        if(data.status === 400 || data.status === 401){
             console.log(data.message)
         }
     
@@ -68,24 +57,20 @@ const Account = () => {
             dispatch(setUserInfo({userInfo: data.body}))
             setShowEditName(!showEditName)
         }
-    
-        if(data.status === 500){
-            console.log(data.message)
-        }
     }
 
     const toggleEditForm = () => {
         setShowEditName(!showEditName)
     }
-    console.log('userI: ', userI)
+    //console.log('userI: ', userI)
     if(!userI || userI === undefined || userI === null){
-        console.log('no userI REDIRECT')
+        //console.log('no userI REDIRECT')
         return <Navigate to="/signin" />
     }
 
     return (
         <>
-            <div className="accountsBalance">
+            <div className=" content__container accountsBalance">
                 <div className="account">
                     <h1 className="account__title">
                         <span>Welcome back</span>
@@ -107,13 +92,16 @@ const Account = () => {
                             <p className={`account__title__edit__form__text ${isInvalidLastName ? 'active' : ''}`}>
                                 Please enter a valid last name. 2-31 characters. Only letters (lowercase or uppercase) and hyphen.
                             </p>
+                            {
+                                isError && <p className="account__update__error">{isError.status} - {isError.message}</p>
+                            }
                             <div className="account__title__edit__form__group">
                                 <button className="account__title__edit__form__btn" onClick={handleEditName} disabled={isInvalidFirstName || isInvalidLastName ? true : false}>Save</button>
                                 <button className="account__title__edit__form__btn" onClick={toggleEditForm}>Cancel</button>
                             </div>
                             
                         </div>
-                    </h1>
+                    </h1>                    
                     <button className={`account__btn ${!showEditName ? 'active' : ''} `} onClick={toggleEditForm}>Edit Name</button>
                 </div>
                 <h2 className="sr-only">Account</h2>

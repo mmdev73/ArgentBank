@@ -1,6 +1,13 @@
-
+import { useNavigate } from "react-router-dom"
 
 const AccountItem = ({ datas }) => {
+    const navigate = useNavigate()
+
+    const handleClick = (e) => {
+        e.preventDefault()
+        const accountId = datas.accountId
+        navigate(`/account/${accountId}`)
+    }
     return (
         <div className="accounts__wrapper">
             <article className="accounts__wrapper__item">
@@ -9,7 +16,7 @@ const AccountItem = ({ datas }) => {
                 <p className="accounts__wrapper__item__description">{datas.availableBalance ? 'Available Balance' : 'Current Balance'}</p>
             </article>
             <div className="accounts__wrapper__item cta">
-                <button className="accounts__wrapper__item__btn">View transactions</button>
+                <button className="accounts__wrapper__item__btn" onClick={handleClick}>View transactions</button>
             </div>
         </div>
         

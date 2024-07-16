@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux'
 import { setLogin, setUserInfo, rmLogin } from '../features/authSlicer'
 import { useEffect } from "react"
+import {services} from '../utils/services'
 const Navbar = () => {
     const isAuth = useSelector((state) => state.auth.token)
     const userI = useSelector((state) => state.auth.userInfo)
@@ -45,14 +46,17 @@ const Navbar = () => {
         console.log(cok[1])
         if(cok[1] !== "null" && cok[1] !== "undefined" && cok[1] !== false) {
             dispatch(setLogin({token: cok[1], rememberMe: true}))
-            getUserInfoNv(cok[1])
+            const userInfo = async () => await services.user.getProfile(cok[1])
+            if(userInfo.status !== 200) return
+            dispatch(setUserInfo({userInfo: userInfo.userInfo}))
+            //getUserInfoNv(cok[1])
         }        
     }
     
     return (
         <nav className="navbar">
             <Link to={'/'} className="navbar__link">
-                <img src="./argentBankLogo.png" alt="Logo de Argent Bank"className="navbar__link__logo"/>
+                <img src="/argentBankLogo.png" alt="Logo de Argent Bank"className="navbar__link__logo"/>
                 <h1 className="sr-only">Argent Bank</h1>
             </Link>
             {
@@ -62,7 +66,7 @@ const Navbar = () => {
                         </Link>
             }
             {
-                isAuth && <div className="authenticated">
+                (isAuth && userI) && <div className="authenticated">
                         <Link to={'/user'} className="navbar__link">
                             <i className="fa fa-user-circle"></i>
                             {userI.firstName}

@@ -23,7 +23,8 @@ export const authSlice = createSlice({
         },
         rmLogin: (state = initialState) => {
             state.token = false
-            //sessionStorage.removeItem('token')
+            sessionStorage.removeItem('token')
+            sessionStorage.removeItem('userI')
             document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
         },
         setUserInfo: (state = initialState, action) => {
