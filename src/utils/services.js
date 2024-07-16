@@ -75,7 +75,7 @@ export const services = {
                     status: data.status,
                     message: data.message,
                     token: token,
-                    rememberMe: false,
+                    rememberMe: true,
                     userInfo: data.body
                 }
             }

@@ -20,7 +20,7 @@ export const authSlice = createSlice({
                 state.token = false
                 document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
             }
-        },
+        }, 
         rmLogin: (state = initialState) => {
             state.token = false
             sessionStorage.removeItem('token')
@@ -29,7 +29,6 @@ export const authSlice = createSlice({
         },
         setUserInfo: (state = initialState, action) => {
             state.userInfo = action.payload.userInfo
-            //sessionStorage.setItem('userInfo', JSON.stringify(action.payload.userInfo))
         },
     },
 })

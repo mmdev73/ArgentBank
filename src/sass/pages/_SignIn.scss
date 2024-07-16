@@ -1,3 +1,12 @@
+@keyframes loader {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
 .signin{
     width: 100%;
     height: calc(100vh - 9.0625rem);
@@ -55,6 +64,16 @@
                 border-color: #00bc77;
                 background-color: #00bc77;
                 color: #fff;
+            }
+            &__loading{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                &__img{
+                    width: 1rem;
+                    height: 1rem;
+                    animation: loader infinite 1.5s linear;
+                }
             }
         }
     }

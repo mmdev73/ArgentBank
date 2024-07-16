@@ -58,7 +58,7 @@ const SignIn = () => {
                         isError && <p className="signin__content__form__error">{isError.status} - {isError.message}</p>
                     }
                     {
-                        isLoadingAuth && <p className="signin__content__form__loading">Checking credentials...</p>
+                        isLoadingAuth && <p className="signin__content__form__loading"><img src="/loader.png" alt="loader" className="signin__content__form__loading__img" />Checking credentials...</p>
                     }
                     <button className="signin__content__form__btn" onClick={handleSignIn}>Sign In</button>
                 </form>

@@ -27,6 +27,13 @@
             width: 100%;
             object-fit: cover;
         }
+        @media screen and (min-width: 1280px) {
+            height: 300px;
+            background-position: -202px -360px;
+            background-size: auto;
+            width: 100%;
+            object-fit: cover;
+        }
         @media screen and (min-width: 1440px) {
             height: 300px;
             background-position: -206px -360px;
@@ -37,8 +44,8 @@
         &__content{
             position: absolute;
             top: 13%;
-            right: 56px;
-            width: 200px;
+            right: 35px;
+            width: 250px;
             background: white;
             padding: 2rem;
             text-align: left;
@@ -48,22 +55,27 @@
                 position: absolute;
                 top: 10px;
                 right: calc(41% - 300px);
-                width: 300px;
+                width: 310px;
                 margin: 2rem;
+            }
+            @media screen and (min-width: 920px) {
+                position: absolute;
+                top: -6px;
+                right: calc(32% - 300px); 
             }
             @media screen and (min-width: 1024px) {
                 position: absolute;
-                top: 10px;
-                right: calc(31% - 300px); 
-                width: 300px;    
-                margin: 2rem;          
+                top: -6px;
+                right: calc(29% - 300px); 
+            }
+            @media screen and (min-width: 1280px) {
+                position: absolute;
+                top: -8px;
+                right: calc(23% - 300px);
             }
             @media screen and (min-width: 1440px) {
                 position: absolute;
-                top: -8px;
                 right: calc(21% - 300px);
-                width: 300px;
-                margin: 2rem;         
             }
             &__subtitle{
                 font-weight: bold;
