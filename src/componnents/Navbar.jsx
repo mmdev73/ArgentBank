@@ -3,12 +3,21 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setLogin, setUserInfo, rmLogin } from '../features/authSlicer'
 import { useEffect } from "react"
 import {services} from '../utils/services'
+/**
+ * Renders a navigation bar component that displays the logo and allows users to sign in or sign out.
+ *
+ * @return {JSX.Element} The navigation bar component.
+ */
 const Navbar = () => {
     const isAuth = useSelector((state) => state.auth.token)
     const userI = useSelector((state) => state.auth.userInfo)
     const dispatch = useDispatch()
     const sessionStorage = window.sessionStorage
     
+    /**
+     * Use to retrieve user session, first by session storage (if available), then by cookies (if available).
+     *
+     */
     const checkStorageAndCookies = async () => {
         if(userI === undefined){
             if(sessionStorage.getItem('token')){

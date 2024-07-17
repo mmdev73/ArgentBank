@@ -1,10 +1,16 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { setLogin, setUserInfo } from '../features/authSlicer'
+import { useDispatch } from 'react-redux'
+import { setLogin } from '../features/authSlicer'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import {services} from '../utils/services'
 
 
+/**
+ * Sign in function that handles user authentication. ('/signin' route)
+ *
+ * @param {Event} e - The event triggering the sign-in process.
+ * @return {JSX.Element} The sign-in form JSX.
+ */
 const SignIn = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()

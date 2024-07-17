@@ -1,8 +1,17 @@
 import { useEffect, useState } from 'react'
 import {services} from '../utils/services'
 import {useSelector} from 'react-redux'
+
+
+/**
+ * Renders a transaction component with details and editable fields.
+ *
+ * @param {Object} transaction - The transaction object containing details.
+ * @param {number} accountId - The ID of the account.
+ * @param {number} index - The index the componnent when we mapped it.
+ * @return {JSX.Element} The rendered transaction component.
+ */
 const Transaction = ({transaction, accountId, index}) => {
-  //console.log(transaction)
   const {token} = useSelector((state) => state.auth)
   const [open, setOpen] = useState(false)
   const [updateCategory, setUpdateCategory] = useState(false)
@@ -13,26 +22,55 @@ const Transaction = ({transaction, accountId, index}) => {
 
   const [error, setError] = useState(false)
 
+  /**
+   * Toggles the update category state when called.
+   *
+   * @param {Event} e - The event object.
+   * @return {void} This function does not return anything.
+   */
   const handleUpdateCategory = (e) => {
     e.preventDefault()
     setUpdateCategory(!updateCategory)
   }
 
+  /**
+   * Toggles the update note state when called.
+   *
+   * @param {Event} e - The event object.
+   * @return {void} This function does not return anything.
+   */
   const handleUpdateNote = (e) => {
     e.preventDefault()
     setUpdateNote(!updateNote)
   }
 
+  /**
+   * Close the update field 'categorie'when called.
+   *
+   * @param {Event} e - The event object.
+   * @return {void} This function does not return anything.
+   */
   const handleCloseCategory = (e) => {
     e.preventDefault()
     setUpdateCategory(!updateCategory)
   }
-
+  /**
+   * Close the update field 'note'when called.
+   *
+   * @param {Event} e - The event object.
+   * @return {void} This function does not return anything.
+   */
   const handleCloseNote = (e) => {
     e.preventDefault()
     setUpdateNote(!updateCategory)
   }
 
+/**
+ * Updates a transaction based on the given type.
+ *
+ * @param {string} type - The type of update. Can be 'category' or 'note'.
+ * @return {void} 
+ */
   const handleUpdate = async (type) => {
     console.log(type)
     let newTransaction = {}

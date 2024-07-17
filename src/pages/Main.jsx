@@ -1,5 +1,10 @@
 import Feature from "../componnents/Feature"
 
+/**
+ * Renders the main component of the application.('/' route)
+ *
+ * @return {JSX.Element} The main component JSX element.
+ */
 const Main = () => {
     return <div className="content__container main">
                 <div className="hero">

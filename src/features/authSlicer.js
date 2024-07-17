@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-//const sessionStorage = window.sessionStorage
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
@@ -8,6 +7,13 @@ export const authSlice = createSlice({
         userInfo: undefined
     },
     reducers: {
+        /**
+         * Log In function. Sets the token and the user information in the state.
+         *
+         * @param {Object} state - State. Initial state by default.
+         * @param {Object} action - Action. Contain the payload.
+         * @return {void} 
+         */
         setLogin: (state = initialState, action) => {
             if (action.payload.token !== "null" && action.payload.token !== "undefined" && action.payload.token !== false) {
                 state.token = action.payload.token
@@ -21,12 +27,25 @@ export const authSlice = createSlice({
                 document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
             }
         }, 
+        /**
+         * Log Out function. Removes the token and the user information from the state.
+         *
+         * @param {Object} state - State. Initial state by default.
+         * @return {void} 
+         */
         rmLogin: (state = initialState) => {
             state.token = false
             sessionStorage.removeItem('token')
             sessionStorage.removeItem('userI')
             document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
         },
+        /**
+         * Updates the user information in the state with the information from the action payload.
+         *
+         * @param {Object} state - The current state object.
+         * @param {Object} action - The action object containing the payload.
+         * @return {void} This function does not return anything.
+         */
         setUserInfo: (state = initialState, action) => {
             state.userInfo = action.payload.userInfo
         },

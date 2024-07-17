@@ -4,6 +4,11 @@ import { services } from '../utils/services'
 import { useEffect, useState } from 'react';
 import Transaction from '../componnents/Transaction'
 
+/**
+ * Renders the AccountView component which displays the details of a specific account. ('/account/:accountId' route)
+ *
+ * @return {JSX.Element} The rendered AccountView component.
+ */
 const AccountView = () => {
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token)
@@ -11,6 +16,12 @@ const AccountView = () => {
   const [transactions, setTransactions] = useState([])
   const [account, setAccount] = useState({})
   
+  /**
+   * A function that handles the account details asynchronously.
+   *
+   * @param {number} accountId - The ID of the account.
+   * @param {string} token - The authentication token.
+   */
   const handleAccount = async (accountId, token) => {
     if(accountId > 0 && token){
       const accountTransactions = await services.transactions.getAllTransactions(token, accountId)

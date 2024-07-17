@@ -1,5 +1,11 @@
 
 
+/**
+ * Renders a feature item component.
+ *
+ * @param {Object} datas - Data for the feature item.
+ * @return {JSX.Element} The feature item component.
+ */
 const FeatureItem = ({ datas }) => {
 
     return <>

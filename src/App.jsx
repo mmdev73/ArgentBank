@@ -7,6 +7,11 @@ import SignIn from './pages/SignIn'
 import Account from './pages/Account'
 import AccountView from './pages/AccountView'
 
+/**
+ * A description of the entire function.
+ *
+ * @return {JSX.Element} description of return value
+ */
 const Layout = () => {  
   return <>
     <Navbar />
@@ -17,9 +22,14 @@ const Layout = () => {
   </>
 }
 
+/**
+ * Renders an error message based on the route error status.
+ *
+ * @return {JSX.Element} The error message component
+ */
 const Error = () =>{
   const error = useRouteError()
-  console.log(error)
+  //console.log(error)
   return <> 
       <div className="content__error">
         <h2 className='content__error__status'>{error.status ? error.status : '404'}</h2>

@@ -5,6 +5,11 @@ import AccountItem from "../componnents/AccountItem"
 import {Navigate} from "react-router-dom"
 import { setUserInfo } from '../features/authSlicer'
 import {services} from '../utils/services'
+/**
+ * Renders the Account page component.
+ *
+ * @return {JSX.Element} The rendered Account page component.
+ */
 const Account = () => {
     const dispatch = useDispatch()
     const userI = useSelector((state) => state.auth.userInfo)
@@ -14,6 +19,12 @@ const Account = () => {
     const [isInvalidFirstName, setIsInvalidFirstName] = useState(false)
     const [isInvalidLastName, setIsInvalidLastName] = useState(false)
     const [isError, setIsError] = useState(false)
+    /**
+     * Handles the edit name event.
+     *
+     * @param {Event} e - The event object.
+     * @return {void} No return value.
+     */
     const handleEditName = (e) => {
         e.preventDefault()
         const firstName = document.getElementById('firstName').value
@@ -24,6 +35,13 @@ const Account = () => {
         }
     }
 
+    /**
+     * Validates the input value based on the provided type.
+     *
+     * @param {string} inputValue - The input value to be validated.
+     * @param {string} [type='firstName'] - The type of input to validate. Defaults to 'firstName'.
+     * @return {boolean} Returns true if the input value is valid, false otherwise.
+     */
     const isValidInput = (inputValue, type = 'firstName') => {
         const rgxName = /^[a-zA-ZÀ-ÖØ-öøç]{2,15}[-]{0,1}[a-zA-ZÀ-ÖØ-öøç]{0,15}$/
         if(!rgxName.test(inputValue)){
@@ -42,6 +60,14 @@ const Account = () => {
         return rgxName.test(inputValue)
     }
 
+    /**
+     * A description of the entire function.
+     *
+     * @param {string} isAuthToken - description of parameter
+     * @param {string} firstName - description of parameter
+     * @param {string} lastName - description of parameter
+     * @return {void} description of return value
+     */
     const updateUserInfo = async (isAuthToken, firstName, lastName) => {
         setIsError(false)
         const data = await services.user.updateProfile(isAuthToken, firstName, lastName)
@@ -59,6 +85,11 @@ const Account = () => {
         }
     }
 
+    /**
+     * Toggles the visibility of the edit form.
+     *
+     * @return {void} 
+     */
     const toggleEditForm = () => {
         setShowEditName(!showEditName)
     }

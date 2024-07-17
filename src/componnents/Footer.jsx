@@ -1,5 +1,10 @@
 
 
+/**
+ * Footer component
+ *
+ * @return {JSX.Element} return the footer component
+ */
 const Footer = () => {
 
     return (
