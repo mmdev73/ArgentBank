@@ -19,10 +19,11 @@ const Layout = () => {
 
 const Error = () =>{
   const error = useRouteError()
+  console.log(error)
   return <> 
       <div className="content__error">
-        <h2 className='content__error__status'>404</h2>
-        <p className='content__error__text'>This page can't be reach. Please return to the <Link to={'/'} className='content__error__link'>homepage</Link></p>
+        <h2 className='content__error__status'>{error.status ? error.status : '404'}</h2>
+        <p className='content__error__text'>{error.message ? error.message : error.statusText ? error.statusText : 'This page can\'t be reach.'} Please return to the <Link to={'/'} className='content__error__link'>homepage</Link></p>
       </div> 
   </>
 }
@@ -35,19 +36,23 @@ const router = createBrowserRouter([
     children: [
       {
         path:'/',
-        element: <Main />
+        element: <Main />,
+        errorElement: <Error />
       },
       {
         path:'/signin',
-        element: <SignIn />
+        element: <SignIn />,
+        errorElement: <Error />
       },
       {
-        path:'/user',
-        element: <Account />
+        path:'/account',
+        element: <Account />,
+        errorElement: <Error />
       },
       {
         path:'/account/:accountId',
-        element: <AccountView />
+        element: <AccountView />,
+        errorElement: <Error />
       },
       {
         path:'/*',

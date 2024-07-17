@@ -135,8 +135,43 @@ export const services = {
                 message: "Unkonwn Error",
                 transactions: null
             }
+        },
+        updateTransaction: async (token, accountId, transaction) => {
+            const objToSend = {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify(transaction)
+            }
+            console.log(transaction)
+            const response = await fetch('http://localhost:3001/api/v1/transactions/' + accountId + '/' + transaction.id, objToSend)
+            const data = await response.json()
+            if (data.status !== 200) {
+                return {
+                    status: data.status,
+                    message: data.message,
+                    transactions: null
+                }
+            }
+
+            if (data.status === 200) {
+                return {
+                    status: data.status,
+                    message: data.message,
+                    transactions: data.body
+                }
+            }
+            return {
+                status: 0,
+                message: "Unkonwn Error",
+                transactions: null
+            }
         }
-    },
+    },    
     data: {
         formatDate: (date) => {
             const dateObj = new Date(date);
@@ -168,12 +203,13 @@ export const services = {
             {
                 accountTransaction.forEach(transaction => {
                 transactionsArr.push({
-                  id: transaction.id, 
+                  id: transaction._id, 
                   accountId: transaction.accountId,
                   description: transaction.description,
                   amount: transaction.amount,
                   balance: transaction.balance,
                   date: services.data.formatDate(transaction.date),
+                  dateOriginal: transaction.date,
                   type: transaction.type,
                   categorie: transaction.categorie,
                   note: transaction.note

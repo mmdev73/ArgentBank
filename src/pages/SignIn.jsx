@@ -33,7 +33,7 @@ const SignIn = () => {
             dispatch(setLogin({token: loginResult.token,rememberMe: false}))
         }
         setIsLoadingAuth(false)
-        navigate("/user")
+        navigate("/account")
     }
 
     return <>

@@ -19,7 +19,7 @@ const AccountView = () => {
       const accountInfo = await services.data.getAccountInfos(accountId)
       setAccount(accountInfo)
     } else {
-      navigate('/user')
+      navigate('/account')
     }
   }
   useEffect(() => {
@@ -54,7 +54,7 @@ const AccountView = () => {
             </div>
             <div className="accountview__transactions__table__body">
               {transactions.map((transaction, index) => (
-                <Transaction key={index} transaction={transaction} index={index} />
+                <Transaction key={index} transaction={transaction} accountId={accountId} index={index} />
               ))}
             </div>
           </div>

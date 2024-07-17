@@ -8,15 +8,17 @@ const Navbar = () => {
     const userI = useSelector((state) => state.auth.userInfo)
     const dispatch = useDispatch()
     const sessionStorage = window.sessionStorage
-    if(userI === undefined){
-        if(sessionStorage.getItem('token')){
-            dispatch(setLogin({token: sessionStorage.getItem('token'), rememberMe: false}))
+    
+    const checkStorageAndCookies = async () => {
+        if(userI === undefined){
+            if(sessionStorage.getItem('token')){
+                dispatch(setLogin({token: sessionStorage.getItem('token'), rememberMe: false}))
+                if(sessionStorage.getItem('userI')){
+                    dispatch(setUserInfo({userInfo: JSON.parse(sessionStorage.getItem('userI'))}))
+                    return
+                }
+            }            
         }
-        if(sessionStorage.getItem('userI')){
-            dispatch(setUserInfo({userInfo: JSON.parse(sessionStorage.getItem('userI'))}))
-        }
-    }
-    const checkCookies = async () => {
         if(document.cookie && isAuth === false) {
             const cok = document.cookie.split('token=')
             if(cok[1] !== "null" && cok[1] !== "undefined" && cok[1] !== false) {
@@ -32,7 +34,7 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-        checkCookies()
+        checkStorageAndCookies()
     }, [])
     
     return (
@@ -49,7 +51,7 @@ const Navbar = () => {
             }
             {
                 (isAuth && userI) && <div className="authenticated">
-                        <Link to={'/user'} className="navbar__link">
+                        <Link to={'/account'} className="navbar__link">
                             <i className="fa fa-user-circle"></i>
                             {userI.firstName}
                         </Link>
