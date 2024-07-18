@@ -4,7 +4,8 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         token: false,
-        userInfo: undefined
+        userInfo: undefined,
+        initialized: false
     },
     reducers: {
         /**
@@ -22,9 +23,11 @@ export const authSlice = createSlice({
                 } else {
                     document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
                 }
+                state.initialized = true
             } else {
                 state.token = false
                 document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
+                state.initialized = false
             }
         }, 
         /**
@@ -38,6 +41,7 @@ export const authSlice = createSlice({
             sessionStorage.removeItem('token')
             sessionStorage.removeItem('userI')
             document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
+            state.initialized = false
         },
         /**
          * Updates the user information in the state with the information from the action payload.
@@ -47,7 +51,9 @@ export const authSlice = createSlice({
          * @return {void} This function does not return anything.
          */
         setUserInfo: (state = initialState, action) => {
+            //console.log(action)
             state.userInfo = action.payload.userInfo
+            state.initialized = action.payload.initialized
         },
     },
 })

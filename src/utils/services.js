@@ -1,4 +1,5 @@
-
+const urlApi = import.meta.env.VITE_API_URL
+//console.log(urlApi)
 /**
  * A collection of services used by the application.
  * Services Modules:
@@ -16,7 +17,7 @@ export const services = {
          * @return {Object} An object containing user login information.
          */
         getLogin: async (username, password) => {
-            const response = await fetch('http://localhost:3001/api/v1/user/login', {
+            const response = await fetch(urlApi + 'user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,7 +75,7 @@ export const services = {
          * @return {Object} An object containing the profile information.
          */
         getProfile: async (token) => {
-            const response = await fetch('http://localhost:3001/api/v1/user/profile', {
+            const response = await fetch(urlApi + 'user/profile', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -130,7 +131,7 @@ export const services = {
                     lastName: lastName
                 })
             }
-            const response = await fetch('http://localhost:3001/api/v1/user/profile', objToSend)
+            const response = await fetch(urlApi +'user/profile', objToSend)
             const data = await response.json()
             return data
         }
@@ -144,7 +145,7 @@ export const services = {
          * @return {Object} An object containing the status, message, and transactions
          */
         getAllTransactions: async (token, accountId) => {
-            const response = await fetch('http://localhost:3001/api/v1/transactions/' + accountId, {
+            const response = await fetch(urlApi + 'transactions/' + accountId, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -195,7 +196,7 @@ export const services = {
                 body: JSON.stringify(transaction)
             }
             console.log(transaction)
-            const response = await fetch('http://localhost:3001/api/v1/transactions/' + accountId + '/' + transaction.id, objToSend)
+            const response = await fetch(urlApi + 'transactions/' + accountId + '/' + transaction.id, objToSend)
             const data = await response.json()
             if (data.status !== 200) {
                 return {
@@ -286,12 +287,12 @@ export const services = {
         formatAmount: (number) => {
             return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(number);
         },
-/**
- * Retrieves the account information based on the given account ID.
- *
- * @param {number|string} accountID - The ID of the account.
- * @return {Object|null} The account information object containing the name and available balance, or null if the account ID is not recognized.
- */
+        /**
+         * Retrieves the account information based on the given account ID.
+         *
+         * @param {number|string} accountID - The ID of the account.
+         * @return {Object|null} The account information object containing the name and available balance, or null if the account ID is not recognized.
+         */
         getAccountInfos: (accountID) => {
             switch (Number(accountID)) {
                 case 6712:

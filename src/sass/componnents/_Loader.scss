@@ -1,0 +1,15 @@
+.loader{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &__image{
+    width: 4rem;
+    height: 4rem;
+    animation: loader infinite 1.5s linear;
+  }
+  &__text{
+    font-size: 1.5rem;
+    color: #3f3f3f;
+  }
+}

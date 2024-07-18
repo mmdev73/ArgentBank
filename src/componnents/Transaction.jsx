@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {services} from '../utils/services'
 import {useSelector} from 'react-redux'
 
@@ -114,9 +114,6 @@ const Transaction = ({transaction, accountId, index}) => {
     setUpdateNote(false)
   }
 
-  useEffect(() => {
-    console.log(category)
-  }, [category])
   return (
     <>
        <div key={index} className="accountview__transactions__table__body__row">
@@ -169,4 +166,4 @@ const Transaction = ({transaction, accountId, index}) => {
   
 }
 
-export default Transaction
+export default Transaction 

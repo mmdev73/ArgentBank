@@ -23,12 +23,12 @@ const Navbar = () => {
             if(sessionStorage.getItem('token')){
                 dispatch(setLogin({token: sessionStorage.getItem('token'), rememberMe: false}))
                 if(sessionStorage.getItem('userI')){
-                    dispatch(setUserInfo({userInfo: JSON.parse(sessionStorage.getItem('userI'))}))
+                    dispatch(setUserInfo({userInfo: JSON.parse(sessionStorage.getItem('userI')), initialized: true}))
                     return
                 }
             }            
         }
-        if(document.cookie && isAuth === false) {
+        if(document.cookie && isAuth === false && userI === undefined) {
             const cok = document.cookie.split('token=')
             if(cok[1] !== "null" && cok[1] !== "undefined" && cok[1] !== false) {
                 dispatch(setLogin({token: cok[1], rememberMe: true}))
@@ -37,14 +37,14 @@ const Navbar = () => {
                     console.error("Credentials Token: unknown or Server Error")
                     return
                 }
-                dispatch(setUserInfo({userInfo: userInfo.userInfo}))
+                dispatch(setUserInfo({userInfo: userInfo.userInfo, initialized: true}))
             }        
         }
     }
 
     useEffect(() => {
         checkStorageAndCookies()
-    }, [])
+    }, [isAuth, userI])
     
     return (
         <nav className="navbar">
