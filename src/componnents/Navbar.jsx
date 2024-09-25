@@ -53,14 +53,14 @@ const Navbar = () => {
                 <h1 className="sr-only">Argent Bank</h1>
             </Link>
             {
-                (!isAuth || !userI) && <Link to={'/signin'} className="navbar__link">
+                (!isAuth || !userI) && <Link to={'/login'} className="navbar__link">
                             <i className="fa fa-user-circle"></i>
                             Sign In
                         </Link>
             }
             {
                 (isAuth && userI) && <div className="authenticated">
-                        <Link to={'/account'} className="navbar__link">
+                        <Link to={'/profile'} className="navbar__link">
                             <i className="fa fa-user-circle"></i>
                             {userI.firstName}
                         </Link>

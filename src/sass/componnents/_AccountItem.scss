@@ -1,4 +1,4 @@
-.accounts__wrapper{
+.accounts__wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,39 +11,46 @@
     box-sizing: border-box;
     text-align: left;
     margin-bottom: 2rem;
+
     @media screen and (min-width: 720px) {
         flex-direction: row;
     }
-    &__item{
+
+    &__item {
         width: 100%;
         flex: 1;
-        &.cta{
+
+        &.cta {
             @media screen and (min-width: 720px) {
                 flex: 0;
             }
-        }        
-        &__title{
+        }
+
+        &__title {
             margin: 0;
             padding: 0;
             font-size: 1rem;
             font-weight: 500;
         }
-        &__amount{
+
+        &__amount {
             margin: 0;
             font-size: 2.5rem;
             font-weight: 700;
         }
-        &__btn{
+
+        &__btn {
             display: block;
             width: 100%;
             padding: 8px;
             font-size: 1.1rem;
             font-weight: bold;
             margin-top: 1rem;
-            border-color: #4f12df;
-            background-color: #611ffa;
-            border-radius: 0.25rem;
+            border-color: #00bc77;
+            background-color: #00bc77;
             color: #fff;
+            border-radius: 0.25rem;
+
             @media screen and (min-width: 720px) {
                 width: 200px;
             }

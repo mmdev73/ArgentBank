@@ -3,10 +3,10 @@ import { setLogin } from '../features/authSlicer'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import {services} from '../utils/services'
-
+ 
 
 /**
- * Sign in function that handles user authentication. ('/signin' route)
+ * Sign in function that handles user authentication. ('/login' route)
  *
  * @param {Event} e - The event triggering the sign-in process.
  * @return {JSX.Element} The sign-in form JSX.
@@ -39,7 +39,7 @@ const SignIn = () => {
             dispatch(setLogin({token: loginResult.token,rememberMe: false}))
         }
         setIsLoadingAuth(false)
-        navigate("/account")
+        navigate("/profile")
     }
 
     return <>

@@ -3,6 +3,9 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 400px 1fr;
+    @media screen and (min-width: 920px) {
+        padding-bottom: 0;        
+    }
     @media screen and (max-width: 768px) {
         grid-template-columns: 1fr;
         grid-template-rows: 300px 1fr;

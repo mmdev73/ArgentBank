@@ -28,6 +28,7 @@ const Account = () => {
     const [isInvalidFirstName, setIsInvalidFirstName] = useState(false)
     const [isInvalidLastName, setIsInvalidLastName] = useState(false)
     const [isError, setIsError] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     /**
      * Handles the edit name event.
@@ -80,6 +81,7 @@ const Account = () => {
      */
     const updateUserInfo = async (isAuthToken, firstName, lastName) => {
         setIsError(false)
+        setIsLoading(true)
         const data = await services.user.updateProfile(isAuthToken, firstName, lastName)
         if (data.status !== 200) {
             setIsError({
@@ -93,6 +95,7 @@ const Account = () => {
             dispatch(setUserInfo({ userInfo: data.body }))
             setShowEditName(!showEditName)
         }
+        setIsLoading(false)
     }
 
     /**
@@ -109,7 +112,7 @@ const Account = () => {
             //console.log("Account useEffect isInitialized")
             if (!userI || userI === undefined || userI === null) {
                 //console.log("Account useEffect userI undefined")
-                navigate("/signin")
+                navigate("/login")
             }
         }
     }, [isInitialized])
@@ -118,10 +121,10 @@ const Account = () => {
         <>
             <div className=" content__container accountsBalance">
                 {
-                    !isInitialized && <Loader />
+                    isLoading && <Loader />
                 }
                 {
-                    isInitialized && <>
+                    !isLoading && <>
                         <div className="account">
                             <h1 className="account__title">
                                 <span>Welcome back</span>

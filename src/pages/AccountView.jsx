@@ -7,7 +7,7 @@ import Loader from '../componnents/Loader'
 import { useInitialized } from '../hooks/useInitialized'
 
 /**
- * Renders the AccountView component which displays the details of a specific account. ('/account/:accountId' route)
+ * Renders the AccountView component which displays the details of a specific account. ('/profile/:accountId' route)
  *
  * @return {JSX.Element} The rendered AccountView component.
  */
@@ -33,7 +33,7 @@ const AccountView = () => {
       const accountInfo = await services.data.getAccountInfos(accountId)
       setAccount(accountInfo)
     } else {
-      navigate('/account')
+      navigate('/profile')
     }
   }
   useEffect(() => {

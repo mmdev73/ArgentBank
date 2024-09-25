@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-
+ 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
@@ -41,6 +41,7 @@ export const authSlice = createSlice({
             sessionStorage.removeItem('token')
             sessionStorage.removeItem('userI')
             document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
+            state.userInfo = undefined
             state.initialized = false
         },
         /**

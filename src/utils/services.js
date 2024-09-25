@@ -4,7 +4,7 @@ const urlApi = import.meta.env.VITE_API_URL
  * A collection of services used by the application.
  * Services Modules:
  * - user
- * - transactions
+ * - transactions 
  * - datas
  */
 export const services = {

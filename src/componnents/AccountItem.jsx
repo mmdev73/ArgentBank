@@ -18,7 +18,7 @@ const AccountItem = ({ datas }) => {
     const handleClick = (e) => {
         e.preventDefault()
         const accountId = datas.accountId
-        navigate(`/account/${accountId}`)
+        navigate(`/profile`)
     }
     return (
         <div className="accounts__wrapper">

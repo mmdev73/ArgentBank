@@ -1,5 +1,5 @@
 .accountsBalance{
-    background-color: #bcc9ce;
+    background-color: #12002b;
     margin-top: -1.25rem;
 }
 
@@ -11,7 +11,7 @@
     padding: 1.5rem;
     box-sizing: border-box;
     &__update__error{
-        width: 70%;
+        width: 40%;
         margin: 1rem auto;
         display: flex;
         flex-flow: column;
@@ -24,10 +24,16 @@
         border-radius: 0.3125rem;
         padding: 0.5rem;
         font-size: 0.8rem;
+        @media screen and (max-width: 768px) {
+            width: 80%;
+        }
+        @media screen and (max-width: 450px) {
+            width: 90%;
+        }
     }
     &__title{
         width: 100%;
-        color: #292929;
+        color: #f5f5f5;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -75,8 +81,8 @@
             }
             &__btn{
                 width: 80px;
-                border-color: #4f12df;
-                color: #611ffa;
+                border-color: #00bc77;
+                color: #058053;
                 font-weight: bold;
                 padding: 10px;
                 @media screen and (min-width: 768px) {
@@ -92,8 +98,8 @@
     }
     &__btn{
         display: none;
-        border-color: #4f12df;
-        color: #611ffa;
+        border-color: #00bc77;
+        color: #058053;
         font-weight: bold;
         padding: 10px;
         &.active{
