@@ -6,7 +6,6 @@ import Loader from "../componnents/Loader"
 import { useNavigate } from "react-router-dom"
 import { setUserInfo } from '../features/authSlicer'
 import { services } from '../utils/services'
-
 import { useInitialized } from "../hooks/useInitialized"
 
 /**
@@ -18,18 +17,27 @@ const Account = () => {
     //console.log("Account")
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
+    const {token, userInfo} = useSelector((state) => state.auth)
     const isInitialized = useInitialized()
-
-    const userI = useSelector((state) => state.auth.userInfo)
-    const token = useSelector((state) => state.auth.token)
-
     const [showEditName, setShowEditName] = useState(false)
     const [isInvalidFirstName, setIsInvalidFirstName] = useState(false)
     const [isInvalidLastName, setIsInvalidLastName] = useState(false)
     const [isError, setIsError] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
+    useEffect(() => {
+        if(token && userInfo) {
+            setIsLoading(false)
+        }
+    },[token, userInfo])
+
+    useEffect(() => {
+        console.log('useEff - Account -> token, isInitialized, userInfo', token ? token.substring(0,5) : 'NoToken', isInitialized, userInfo)
+        if ((!token || !isInitialized || !userInfo) && !isLoading) {
+            navigate("/login")
+            return
+        }
+    }, [token,isInitialized,userInfo,navigate])
     /**
      * Handles the edit name event.
      *
@@ -44,6 +52,7 @@ const Account = () => {
         if (!isInvalidFirstName && !isInvalidLastName) {
             updateUserInfo(token, firstName, lastName)
         }
+        //setIsLoading(false)
     }
 
     /**
@@ -95,8 +104,9 @@ const Account = () => {
             dispatch(setUserInfo({ userInfo: data.body }))
             setShowEditName(!showEditName)
         }
-        setIsLoading(false)
+        //setIsLoading(false)
     }
+
 
     /**
      * Toggles the visibility of the edit form.
@@ -106,74 +116,61 @@ const Account = () => {
     const toggleEditForm = () => {
         setShowEditName(!showEditName)
     }
-    useEffect(() => {
-        //console.log("Account useEffect")
-        if (isInitialized) {
-            //console.log("Account useEffect isInitialized")
-            if (!userI || userI === undefined || userI === null) {
-                //console.log("Account useEffect userI undefined")
-                navigate("/login")
-            }
-        }
-    }, [isInitialized])
-
-    return (
-        <>
-            <div className=" content__container accountsBalance">
-                {
-                    isLoading && <Loader />
-                }
-                {
-                    !isLoading && <>
-                        <div className="account">
-                            <h1 className="account__title">
-                                <span>Welcome back</span>
-                                <span className="account__title__name">{userI ? userI.firstName : ``} {userI ? userI.lastName : ``}</span>
-                                <div className={`account__title__edit__form ${showEditName ? 'active' : ''} `}>
-                                    <div className="account__title__edit__form__group">
-                                        <div className="account__title__edit__form__subgroup">
-                                            <label htmlFor="firstName" className="account__title__edit__form__group__label sr-only">First Name</label>
-                                            <input type="text" id="firstName" className="account__title__edit__form__group__input" defaultValue={userI ? userI.firstName : ``} onInput={(e) => { isValidInput(e.target.value) }} />
-                                        </div>
-                                        <div className="account__title__edit__form__subgroup">
-                                            <label htmlFor="lastName" className="account__title__edit__form__group__label sr-only">Last Name</label>
-                                            <input type="text" id="lastName" className="account__title__edit__form__group__input" defaultValue={userI ? userI.lastName : ``} onInput={(e) => { isValidInput(e.target.value, 'lastname') }} />
-                                        </div>
+    if (isLoading) {
+        return <Loader />
+    }
+    if (!isLoading && userInfo) {
+        return (
+            <>
+                <div className=" content__container accountsBalance">
+                    <div className="account">
+                        <h1 className="account__title">
+                            <span>Welcome back</span>
+                            <span className="account__title__name">{userInfo ? userInfo.firstName : ``} {userInfo ? userInfo.lastName : ``}</span>
+                            <div className={`account__title__edit__form ${showEditName ? 'active' : ''} `}>
+                                <div className="account__title__edit__form__group">
+                                    <div className="account__title__edit__form__subgroup">
+                                        <label htmlFor="firstName" className="account__title__edit__form__group__label sr-only">First Name</label>
+                                        <input type="text" id="firstName" className="account__title__edit__form__group__input" defaultValue={userInfo ? userInfo.firstName : ``} onInput={(e) => { isValidInput(e.target.value) }} />
                                     </div>
-                                    <p className={`account__title__edit__form__text ${isInvalidFirstName ? 'active' : ''}`}>
-                                        Please enter a valid first name. 2-31 characters. Only letters (lowercase or uppercase) and hyphen.
-                                    </p>
-                                    <p className={`account__title__edit__form__text ${isInvalidLastName ? 'active' : ''}`}>
-                                        Please enter a valid last name. 2-31 characters. Only letters (lowercase or uppercase) and hyphen.
-                                    </p>
-                                    {
-                                        isError && <p className="account__update__error">{isError.status} - {isError.message}</p>
-                                    }
-                                    <div className="account__title__edit__form__group">
-                                        <button className="account__title__edit__form__btn" onClick={handleEditName} disabled={isInvalidFirstName || isInvalidLastName ? true : false}>Save</button>
-                                        <button className="account__title__edit__form__btn" onClick={toggleEditForm}>Cancel</button>
+                                    <div className="account__title__edit__form__subgroup">
+                                        <label htmlFor="lastName" className="account__title__edit__form__group__label sr-only">Last Name</label>
+                                        <input type="text" id="lastName" className="account__title__edit__form__group__input" defaultValue={userInfo ? userInfo.lastName : ``} onInput={(e) => { isValidInput(e.target.value, 'lastname') }} />
                                     </div>
-
                                 </div>
-                            </h1>
-                            <button className={`account__btn ${!showEditName ? 'active' : ''} `} onClick={toggleEditForm}>Edit Name</button>
-                        </div>
-                        <h2 className="sr-only">Account</h2>
-                        <section className="accounts">
-                            {
-                                accountsBalances && accountsBalances.map((account, index) => {
-                                    return (
-                                        <AccountItem key={index} datas={account} />
-                                    )
-                                })
-                            }
-                        </section>
-                    </>
-                }
+                                <p className={`account__title__edit__form__text ${isInvalidFirstName ? 'active' : ''}`}>
+                                    Please enter a valid first name. 2-31 characters. Only letters (lowercase or uppercase) and hyphen.
+                                </p>
+                                <p className={`account__title__edit__form__text ${isInvalidLastName ? 'active' : ''}`}>
+                                    Please enter a valid last name. 2-31 characters. Only letters (lowercase or uppercase) and hyphen.
+                                </p>
+                                {
+                                    isError && <p className="account__update__error">{isError.status} - {isError.message}</p>
+                                }
+                                <div className="account__title__edit__form__group">
+                                    <button className="account__title__edit__form__btn" onClick={handleEditName} disabled={isInvalidFirstName || isInvalidLastName ? true : false}>Save</button>
+                                    <button className="account__title__edit__form__btn" onClick={toggleEditForm}>Cancel</button>
+                                </div>
 
-            </div>
-        </>
-    )
-} 
+                            </div>
+                        </h1>
+                        <button className={`account__btn ${!showEditName ? 'active' : ''} `} onClick={toggleEditForm}>Edit Name</button>
+                    </div>
+                    <h2 className="sr-only">Account</h2>
+                    <section className="accounts">
+                        {
+                            accountsBalances && accountsBalances.map((account, index) => {
+                                return (
+                                    <AccountItem key={index} datas={account} />
+                                )
+                            })
+                        }
+                    </section>
+                </div>
+            </>
+        )
+    }
+    
+}
 
 export default Account

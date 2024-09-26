@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { store } from '../app/store';
+import store from '../app/store';
 
 export const useInitialized = () => {
   const state = store.getState()

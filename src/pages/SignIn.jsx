@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux'
-import { setLogin } from '../features/authSlicer'
+import { setLogin, setUserInfo } from '../features/authSlicer'
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
-import {services} from '../utils/services'
- 
+import { services } from '../utils/services'
+
 
 /**
  * Sign in function that handles user authentication. ('/login' route)
@@ -16,28 +16,28 @@ const SignIn = () => {
     const navigate = useNavigate()
     const [isLoadingAuth, setIsLoadingAuth] = useState(false)
     const [isError, setIsError] = useState(false)
-    const sessionStorage = window.sessionStorage
     const handleSignIn = async (e) => {
         e.preventDefault()
         setIsError(false)
         setIsLoadingAuth(true)
         const username = document.getElementById('username').value
         const password = document.getElementById('password').value
-        const loginResult = await services.user.getLogin(username, password)        
-        //console.log(loginResult)
-        if(loginResult.status !== 200){
+        const loginResult = await services.user.getLogin(username, password)
+        console.log(loginResult)
+        if (loginResult.status !== 200) {
             setIsError(loginResult)
             return
         }
         const rememberMe = document.getElementById('remember')
-        sessionStorage.setItem('userI', JSON.stringify(loginResult.userInfo))
-        sessionStorage.setItem('token', loginResult.token)
-        if(rememberMe.checked){
-            dispatch(setLogin({token: loginResult.token,rememberMe: true}))
+        //sessionStorage.setItem('userI', JSON.stringify(loginResult.userInfo))
+        //sessionStorage.setItem('token', loginResult.token)
+        if (rememberMe.checked) {
+            dispatch(setLogin({ token: loginResult.token, rememberMe: true }))
 
         } else {
-            dispatch(setLogin({token: loginResult.token,rememberMe: false}))
+            dispatch(setLogin({ token: loginResult.token, rememberMe: false }))
         }
+        dispatch(setUserInfo({ userInfo: loginResult.userInfo, initialized: true }))
         setIsLoadingAuth(false)
         navigate("/profile")
     }
@@ -50,14 +50,14 @@ const SignIn = () => {
                 <form className="signin__content__form">
                     <div className="signin__content__form__group">
                         <label htmlFor="username" className="signin__content__form__group__label">Username</label>
-                        <input type="text" name="username" id="username" className="signin__content__form__group__input" autoComplete="username"/>
+                        <input type="text" name="username" id="username" className="signin__content__form__group__input" autoComplete="username" />
                     </div>
                     <div className="signin__content__form__group">
                         <label htmlFor="password" className="signin__content__form__group__label">Password</label>
-                        <input type="password" name="password" id="password" className="signin__content__form__group__input" autoComplete="current-password"/>
+                        <input type="password" name="password" id="password" className="signin__content__form__group__input" autoComplete="current-password" />
                     </div>
                     <div className="signin__content__form__group signin__content__form__group--remember">
-                        <input type="checkbox" name="remember" id="remember" className="signin__content__form__group__input signin__content__form__group__input--remember"/>
+                        <input type="checkbox" name="remember" id="remember" className="signin__content__form__group__input signin__content__form__group__input--remember" />
                         <label htmlFor="remember" className="signin__content__form__group__label signin__content__form__group__label--remember">Remember me</label>
                     </div>
                     {
@@ -68,7 +68,7 @@ const SignIn = () => {
                     }
                     <button className="signin__content__form__btn" onClick={handleSignIn}>Sign In</button>
                 </form>
-            </div>            
+            </div>
         </section>
     </>
 }

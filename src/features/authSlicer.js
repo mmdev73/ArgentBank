@@ -1,11 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
- 
+const saveToLocalStorage = (state) => {
+    try {
+        const serializedState = JSON.stringify(state)
+        sessionStorage.setItem('authState', serializedState)
+    } catch (e) {
+        console.warn("Error saving to localStorage", e)
+    }
+}
 export const authSlice = createSlice({
     name: 'auth',
-    initialState: {
+    initialState: JSON.parse(sessionStorage.getItem('authState')) || {
         token: false,
-        userInfo: undefined,
-        initialized: false
+        userInfo: false,
+        initialized: false,
     },
     reducers: {
         /**
@@ -23,13 +30,15 @@ export const authSlice = createSlice({
                 } else {
                     document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
                 }
-                state.initialized = true
             } else {
                 state.token = false
                 document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
                 state.initialized = false
             }
-        }, 
+            state.initialized = true
+            const stateToPersist = state
+            saveToLocalStorage(stateToPersist)
+        },
         /**
          * Log Out function. Removes the token and the user information from the state.
          *
@@ -38,8 +47,7 @@ export const authSlice = createSlice({
          */
         rmLogin: (state = initialState) => {
             state.token = false
-            sessionStorage.removeItem('token')
-            sessionStorage.removeItem('userI')
+            sessionStorage.removeItem('authState')
             document.cookie = `token=null; path=/; max-age=-1; SameSite=None; Secure`
             state.userInfo = undefined
             state.initialized = false
@@ -52,9 +60,16 @@ export const authSlice = createSlice({
          * @return {void} This function does not return anything.
          */
         setUserInfo: (state = initialState, action) => {
-            //console.log(action)
-            state.userInfo = action.payload.userInfo
-            state.initialized = action.payload.initialized
+            console.log(action)
+            if (action.payload.userInfo !== "null" && action.payload.userInfo !== "undefined" && action.payload.userInfo !== false) {
+                state.userInfo = action.payload.userInfo
+                state.initialized = true
+            } else {
+                state.userInfo = false
+                state.initialized = false
+            }
+            const stateToPersist = state
+            saveToLocalStorage(stateToPersist)
         },
     },
 })

@@ -29,11 +29,31 @@ const Layout = () => {
  */
 const Error = () =>{
   const error = useRouteError()
-  //console.log(error)
+  console.log(error)
   return <> 
       <div className="content__error">
-        <h2 className='content__error__status'>{error.status ? error.status : '404'}</h2>
-        <p className='content__error__text'>{error.message ? error.message : error.statusText ? error.statusText : 'This page can\'t be reach.'} Please return to the <Link to={'/'} className='content__error__link'>homepage</Link></p>
+        {
+          error && <>
+            <h2 className='content__error__status'>
+              {error.status ? error.status : '404'}
+            </h2>
+            <p className='content__error__text'>
+              {error.message ? error.message : error.statusText ? error.statusText : 'This page can\'t be reach.'} 
+              Please return to the <Link to={'/'} className='content__error__link'>homepage</Link>
+            </p>
+          </>
+        }
+        {
+          !error && <>
+            <h2 className='content__error__status'>
+              404
+            </h2>
+            <p className='content__error__text'>
+              This page can't be reach.
+              Please return to the <Link to={'/'} className='content__error__link'>homepage</Link>
+            </p>
+          </>
+        }
       </div> 
   </>
 }
