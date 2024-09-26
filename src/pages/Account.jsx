@@ -33,10 +33,11 @@ const Account = () => {
 
     useEffect(() => {
         console.log('useEff - Account -> token, isInitialized, userInfo', token ? token.substring(0,5) : 'NoToken', isInitialized, userInfo)
-        if ((!token || !isInitialized || !userInfo) && !isLoading) {
-            navigate("/login")
+        if(isInitialized && token && userInfo) {
+            setIsLoading(false)
             return
         }
+        navigate("/") 
     }, [token,isInitialized,userInfo,navigate])
     /**
      * Handles the edit name event.

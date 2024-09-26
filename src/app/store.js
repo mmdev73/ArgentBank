@@ -17,8 +17,8 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
   },
-  preloadedState: loadFromLocalStorage(),
+  // preloadedState: loadFromLocalStorage(),
 })
 
 export default store
-export { loadFromLocalStorage }
+export { loadFromLocalStorage } 
