@@ -26,12 +26,29 @@ const Account = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!token) {
-            navigate("/login");
-        } else if (token && userInfo) {
-            setIsLoading(false);
-        }
-    }, [token, userInfo, navigate]);
+        const checkTokenInCookies = async () => {
+            if (!token) {
+                const cookieToken = document.cookie.split('; ').find(row => row.startsWith('token='));
+                if (cookieToken) {
+                    const tokenValue = cookieToken.split('=')[1];
+                    if (tokenValue && tokenValue !== "null" && tokenValue !== "undefined") {
+                        const userInfoFetch = await services.user.getProfile(tokenValue);
+                        if (userInfoFetch.status === 200) {
+                            dispatch(setLogin({ token: tokenValue, rememberMe: true }));
+                            dispatch(setUserInfo({ userInfo: userInfoFetch.userInfo, initialized: true }));
+                            setIsLoading(false);
+                            return;
+                        }
+                    }
+                }
+                navigate("/login");
+            } else if (token && userInfo) {
+                setIsLoading(false);
+            }
+        };
+
+        checkTokenInCookies();
+    }, [token, userInfo, navigate, dispatch]);
 
     useEffect(() => {
         console.log('useEff - Account -> token, isInitialized, userInfo', token ? token.substring(0, 5) : 'NoToken', isInitialized, userInfo);
