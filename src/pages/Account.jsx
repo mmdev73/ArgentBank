@@ -15,30 +15,32 @@ import { useInitialized } from "../hooks/useInitialized"
  */
 const Account = () => {
     //console.log("Account")
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const {token, userInfo} = useSelector((state) => state.auth)
-    const isInitialized = useInitialized()
-    const [showEditName, setShowEditName] = useState(false)
-    const [isInvalidFirstName, setIsInvalidFirstName] = useState(false)
-    const [isInvalidLastName, setIsInvalidLastName] = useState(false)
-    const [isError, setIsError] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token, userInfo } = useSelector((state) => state.auth);
+    const isInitialized = useInitialized();
+    const [showEditName, setShowEditName] = useState(false);
+    const [isInvalidFirstName, setIsInvalidFirstName] = useState(false);
+    const [isInvalidLastName, setIsInvalidLastName] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if(token && userInfo) {
-            setIsLoading(false)
+        if (!token) {
+            navigate("/login");
+        } else if (token && userInfo) {
+            setIsLoading(false);
         }
-    },[token, userInfo])
+    }, [token, userInfo, navigate]);
 
     useEffect(() => {
-        console.log('useEff - Account -> token, isInitialized, userInfo', token ? token.substring(0,5) : 'NoToken', isInitialized, userInfo)
-        if(isInitialized && token && userInfo) {
-            setIsLoading(false)
-            return
+        console.log('useEff - Account -> token, isInitialized, userInfo', token ? token.substring(0, 5) : 'NoToken', isInitialized, userInfo);
+        if (isInitialized && token && userInfo) {
+            setIsLoading(false);
+        } else if (!token) {
+            navigate("/login");
         }
-        navigate("/") 
-    }, [token,isInitialized,userInfo,navigate])
+    }, [token, isInitialized, userInfo, navigate]);
     /**
      * Handles the edit name event.
      *
