@@ -3,6 +3,7 @@ const saveToLocalStorage = (state) => {
     try {
         const serializedState = JSON.stringify(state)
         sessionStorage.setItem('authState', serializedState)
+        console.log("Saved to localStorage")
     } catch (e) {
         console.warn("Error saving to localStorage", e)
     }

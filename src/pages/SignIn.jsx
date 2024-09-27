@@ -1,7 +1,7 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setLogin, setUserInfo } from '../features/authSlicer'
 import { useNavigate } from "react-router-dom"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { services } from '../utils/services'
 
 
@@ -16,6 +16,13 @@ const SignIn = () => {
     const navigate = useNavigate()
     const [isLoadingAuth, setIsLoadingAuth] = useState(false)
     const [isError, setIsError] = useState(false)
+    const token = useSelector(state => state.auth.token)
+
+    useEffect(() => {
+        if(token) navigate('/profile')
+    }, [token])
+
+
     const handleSignIn = async (e) => {
         e.preventDefault()
         setIsError(false)
